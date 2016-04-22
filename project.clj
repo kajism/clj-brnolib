@@ -1,6 +1,21 @@
 (defproject clj-brnolib "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+  :description "Utility library for our projects"
+  :url "https://github.com/kajism/clj-brnolib"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.7.0"]])
+  :dependencies [[org.clojure/clojure "1.8.0"]
+                 [org.clojure/clojurescript "1.8.40"]
+                 [clj-time "0.11.0"]
+                 [com.andrewmcveigh/cljs-time "0.4.0"]
+                 [com.cognitect/transit-clj "0.8.285"]
+                 [com.cognitect/transit-cljs "0.8.237"]
+                 [prismatic/schema "1.1.0"]
+                 [re-frame "0.7.0"]
+                 [com.taoensso/timbre "4.3.1"]
+                 [com.taoensso/truss "1.2.0"]
+                 [re-com "0.8.1"]]
+  :profiles {:dev {:dependencies [[com.cemerick/piggieback "0.2.1"]
+                                  [com.datomic/datomic-free "0.9.5350"]
+                                  [org.clojure/java.jdbc "0.5.8"]
+                                  [org.clojure/tools.nrepl "0.2.12"]]
+                   :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}}})
