@@ -16,13 +16,13 @@
 
 (re-frame/register-handler
  :table-state-set
- util/debug-mw
+ re-frame/debug
  (fn [db [_ table-id state]]
    (assoc-in db [:table-states table-id] state)))
 
 (re-frame/register-handler
  :table-state-change
- util/debug-mw
+ re-frame/debug
  (fn [db [_ table-id key val]]
    ((if (fn? val) update-in assoc-in) db [:table-states table-id key] val)))
 
@@ -190,7 +190,7 @@
                      [:td {:class (str #_"text-nowrap" (when (or (number? value) (transit/bigdec? value)) " text-right"))}
                       (cond
                         (or (string? value) (vector? value)) value
-                        (= js/Date (type value)) (time/datetime-to-str value)
+                        (= js/Date (type value)) (time/to-format value time/ddMMyyyyHHmm)
                         (number? value) (util/money->text value)
                         (transit/bigdec? value) (util/money->text (util/parse-int (.-rep value)))
                         :else (str value))]))])

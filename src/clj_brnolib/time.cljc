@@ -7,63 +7,40 @@
                        [clj-time.format :as time-format]])
             [clojure.string :as str]))
 
-(defn to-date
+(defn- to-date
   "Prevede z cljs.time date objektu do java.util.Date resp. js/Date"
   [date]
   (time-coerce/to-date date))
 
-(defn from-date
+(defn- from-date
   "Prevede z js Date do cljs.time date"
   [date]
   (time-coerce/from-date date))
 
-(def formatter-ddMMyyyy (time-format/formatter "d.M.yyyy"))
+(def dMyyyy (time-format/formatter "d.M.yyyy"))
+(def ddMMyyyy (time-format/formatter "dd.MM.yyyy"))
+(def dMyyyyHmmss (time-format/formatter "d.M.yyyy H:mm:ss" #?(:clj (time/default-time-zone))))
+(def ddMMyyyyHHmmss (time-format/formatter "dd.MM.yyyy HH:mm:ss" #?(:clj (time/default-time-zone))))
+(def ddMMyyyyHHmm (time-format/formatter "dd.MM.yyyy HH:mm" #?(:clj (time/default-time-zone))))
+(def HHmm (time-format/formatter "HH:mm" #?(:clj (time/default-time-zone))))
 
-(defn date-to-str [date]
-  (if (nil? date)
-    ""
-    (time-format/unparse formatter-ddMMyyyy (from-date date))))
-
-(defn str-to-date [str]
-  (when-not (str/blank? str)
-    (to-date (time-format/parse formatter-ddMMyyyy str))))
-
-(def formatter-ddMMyyyyHHmm (time-format/formatter "d.M.yyyy H:mm:ss" #?(:clj (time/default-time-zone))))
-
-(defn datetime-to-str [date]
+(defn to-format [date formatter]
   (if (nil? date)
     ""
     (->> date
          from-date
          #?(:cljs time/to-default-time-zone)
-         (time-format/unparse formatter-ddMMyyyyHHmm))))
+         (time-format/unparse formatter))))
 
-(defn str-to-datetime [str]
+(defn from-format [str formatter]
   (when-not (str/blank? str)
     (->> str
-         (time-format/parse formatter-ddMMyyyyHHmm)
+         (time-format/parse formatter)
          #?(:cljs time/from-default-time-zone)
          to-date)))
 
-;;(datetime-to-str (str-to-datetime "27.01.2016 15:16"))
-
-(def formatter-HHmm (time-format/formatter "HH:mm" #?(:clj (time/default-time-zone))))
-
-(defn time-to-str [date]
-  (if (nil? date)
-    ""
-    (->> date
-         from-date
-         #?(:cljs time/to-default-time-zone)
-         (time-format/unparse formatter-HHmm))))
-
 (defn time-plus-hours [date n]
   (time/plus (from-date date) (time/hours n)))
-
-(defn time-plus-hours-to-str [date n]
-  (if (nil? date)
-    ""
-    (time-format/unparse formatter-HHmm (time-plus-hours date n))))
 
 (defn min->sec [min]
   (* min 60))

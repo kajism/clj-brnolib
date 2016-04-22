@@ -1,21 +1,11 @@
 (ns clj-brnolib.cljs.util
   (:require [clojure.string :as str]
             [cognitect.transit :as transit]
-            [re-frame.core :as re-frame]
             [schema.core :as s]))
 
 (def client-id-counter (atom 0))
 (defn new-cid []
   (swap! client-id-counter inc))
-
-(defn valid-schema?
-  "validate the given db, writing any problems to console.error"
-  [db db-schema]
-  (if-let [res (s/check db-schema db)]
-    (.error js/console (str "schema problem: " res))))
-
-(def debug-mw [(when ^boolean goog.DEBUG re-frame/debug)
-               (when ^boolean goog.DEBUG (re-frame/after valid-schema?))])
 
 (defn dissoc-temp-keys [m]
   (into {} (remove (fn [[k v]]
@@ -27,7 +17,7 @@
 (defn sort-by-locale
   "Tridi spravne cestinu (pouziva funkci js/String.localeCompare). keyfn musi vracet string!"
   [key-fn coll]
-  (sort-by (comp str/upper-case str key-fn) #(.localeCompare %1 %2) coll))
+  (sort-by (comp str key-fn) #(.localeCompare %1 %2) coll))
 
 (defn remove-spaces [s]
   (-> s
@@ -71,9 +61,12 @@
          (when d
            (str "," d)))))
 
-(defn bigdec->float [n]
+(defn bigdec->str [n]
   (when n
-    (parse-float (.-rep n))))
+    (.-rep n)))
+
+(defn bigdec->float [n]
+  (parse-float (bigdec->str n)))
 
 (defn file-size->str [n]
   (cond
