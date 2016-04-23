@@ -43,10 +43,13 @@
   (time/plus (from-date date) (time/hours n)))
 
 (defn min->sec [min]
-  (* min 60))
+  (when min
+    (* min 60)))
 
 (defn hour->sec [hour]
-  (* hour (min->sec 60)))
+  (when hour
+    (* hour (min->sec 60))))
 
 (defn hour->millis [hour]
-  (* (hour->sec hour) 1000))
+  (when hour
+    (* (hour->sec hour) 1000)))

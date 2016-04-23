@@ -50,8 +50,8 @@
 (defn money->text [n]
   (let [[i d] (-> n
                   str
-                  (str/replace "," ".")
-                  (str/split #"\."))]
+                  (str/replace "." ",")
+                  (str/split #"\,"))]
     (str (->> i
               reverse
               (partition-all 3)
@@ -68,7 +68,7 @@
 (defn bigdec->float [n]
   (parse-float (bigdec->str n)))
 
-(defn file-size->str [n]
+(defn file-size->text [n]
   (cond
     (nil? n) ""
     (neg? n) "-"
