@@ -36,10 +36,16 @@
           (into [" WHERE 1=1"])
           (str/join " ")))))
 
-(defn select
-  [db-spec table-kw where-m]
+(defmulti select (fn [db-spec table-kw where-m]
+                   table-kw))
+
+(defn select-default [db-spec table-kw where-m]
+  (timbre/debug "Selecting" table-kw "where" where-m)
   (jdbc/query db-spec (into [(str "SELECT * FROM " (esc table-kw) (where where-m))]
                             (flatten (vals where-m)))))
+
+(defmethod select :default [db-spec table-kw where-m]
+  (select-default db-spec table-kw where-m))
 
 (defn- h2-inserted-id [insert-result]
   (-> insert-result
@@ -61,13 +67,25 @@
                 ["\"id\" = ?" (:id row)])
   (:id row))
 
-(defn save! [db-spec table-kw row]
+(defmulti save! (fn [db-spec table-kw row]
+                  table-kw))
+
+(defn save!-default [db-spec table-kw row]
   (timbre/debug "Saving" table-kw "row" row)
   (let [id (if (:id row)
              (update! db-spec table-kw row)
              (insert! db-spec table-kw row))]
     (first (select db-spec table-kw {:id id}))))
 
-(defn delete! [db-spec table-kw id]
+(defmethod save! :default [db-spec table-kw row]
+  (save!-default db-spec table-kw row))
+
+(defmulti delete! (fn [db-spec table-kw id]
+                    table-kw))
+
+(defn delete!-default [db-spec table-kw id]
   (timbre/debug "Deleting" table-kw "row" id)
   (jdbc/delete! db-spec (esc table-kw) ["\"id\" = ?" id]))
+
+(defmethod delete! :default [db-spec table-kw id]
+  (delete!-default db-spec table-kw id))
