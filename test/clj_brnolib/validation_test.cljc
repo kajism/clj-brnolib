@@ -7,8 +7,9 @@
   (t/is (not (sut/valid-name? nil)))
   (t/is (not (sut/valid-name? "")))
   (t/is (not (sut/valid-name? "hello")))
+  (t/is (not (sut/valid-name? "Hello World")))
   (t/is (sut/valid-name? "Hello"))
-  (t/is (not (sut/valid-name? "Hello World"))))
+  (t/is (sut/valid-name? "Ťuňťa")))
 
 (t/deftest valid-email?-test
   (t/is (not (sut/valid-email? nil)))
