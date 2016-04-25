@@ -28,3 +28,10 @@
 (t/deftest hour->millis-test
   (t/is (nil? (sut/hour->millis nil)))
   (t/is (= (* 60 60 1000) (sut/hour->millis 1))))
+
+(t/deftest to-date-test
+  (t/is (nil? (sut/to-date nil))))
+
+(t/deftest from-date-test
+  (t/is (nil? (sut/from-date nil))))
+

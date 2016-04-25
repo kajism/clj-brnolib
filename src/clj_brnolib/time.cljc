@@ -7,15 +7,17 @@
                        [clj-time.format :as time-format]])
             [clojure.string :as str]))
 
-(defn- to-date
+(defn to-date
   "Prevede z cljs.time date objektu do java.util.Date resp. js/Date"
   [date]
-  (time-coerce/to-date date))
+  (when date
+    (time-coerce/to-date date)))
 
-(defn- from-date
+(defn from-date
   "Prevede z js Date do cljs.time date"
   [date]
-  (time-coerce/from-date date))
+  (when date
+    (time-coerce/from-date date)))
 
 (def dMyyyy (time-format/formatter "d.M.yyyy"))
 (def ddMMyyyy (time-format/formatter "dd.MM.yyyy"))
