@@ -1,6 +1,7 @@
 (ns clj-brnolib.jdbc-common
   (:require [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str])
+            [clojure.string :as str]
+            [taoensso.timbre :as timbre])
   (:import java.util.Date))
 
 (defn esc
@@ -47,12 +48,11 @@
       first))
 
 (defn insert! [db-spec table-kw row]
-  (let [row (assoc row :created (java.util.Date.))]
-    (->
-     (jdbc/insert! db-spec
-                   (esc table-kw)
-                   (esc row))
-     h2-inserted-id)))
+  (->
+   (jdbc/insert! db-spec
+                 (esc table-kw)
+                 (esc row))
+   h2-inserted-id))
 
 (defn update! [db-spec table-kw row]
   (jdbc/update! db-spec
@@ -62,11 +62,12 @@
   (:id row))
 
 (defn save! [db-spec table-kw row]
-  (let [row (assoc row :modified (java.util.Date.))
-        id (if (:id row)
+  (timbre/debug "Saving" table-kw "row" row)
+  (let [id (if (:id row)
              (update! db-spec table-kw row)
              (insert! db-spec table-kw row))]
     (first (select db-spec table-kw {:id id}))))
 
 (defn delete! [db-spec table-kw id]
+  (timbre/debug "Deleting" table-kw "row" id)
   (jdbc/delete! db-spec (esc table-kw) ["\"id\" = ?" id]))
