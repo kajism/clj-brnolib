@@ -33,19 +33,20 @@
 
 (defn delete-button
   "Delete button with confirmation"
-  [delete-evt]
-  (let [showing? (reagent/atom false)]
+  [delete-evt position]
+  (let [showing? (reagent/atom false)
+        position (or position :below-left)]
     (fn []
       [re-com/popover-anchor-wrapper
        :showing? showing?
-       :position :below-center
+       :position position
        :anchor [re-com/md-icon-button
                 :md-icon-name "zmdi-delete"
                 :tooltip "Smazat"
                 :on-click #(reset! showing? true)]
        :popover [re-com/popover-content-wrapper
                  :showing? showing?
-                 :position :below-center
+                 :position position
                  :on-cancel #(reset! showing? false)
                  :body [re-com/v-box
                         :gap "10px"
@@ -55,7 +56,9 @@
                                     :align :end
                                     :children [[re-com/button
                                                 :label "Ano"
-                                                :on-click delete-evt]
+                                                :on-click #(do
+                                                             (delete-evt)
+                                                             (reset! showing? false))]
                                                [re-com/button
                                                 :label "Ne"
                                                 :on-click #(reset! showing? false)]]]]]]])))
