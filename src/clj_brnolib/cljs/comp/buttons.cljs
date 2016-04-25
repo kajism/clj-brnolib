@@ -38,20 +38,21 @@
     (fn []
       [re-com/popover-anchor-wrapper
        :showing? showing?
-       :position :below-left
+       :position :below-center
        :anchor [re-com/md-icon-button
                 :md-icon-name "zmdi-delete"
                 :tooltip "Smazat"
                 :on-click #(reset! showing? true)]
        :popover [re-com/popover-content-wrapper
                  :showing? showing?
-                 :position :left-center
+                 :position :below-center
                  :on-cancel #(reset! showing? false)
                  :body [re-com/v-box
                         :gap "10px"
                         :children ["Opravdu smazat tuto položku?"
                                    [re-com/h-box
                                     :gap "5px"
+                                    :align :end
                                     :children [[re-com/button
                                                 :label "Ano"
                                                 :on-click delete-evt]
