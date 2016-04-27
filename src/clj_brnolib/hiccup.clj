@@ -16,17 +16,17 @@
   [data]
   [:pre (with-out-str (pprint data))])
 
-(defn hiccup-frame [body]
+(defn hiccup-frame [title body]
   (list
    [:head
     [:meta {:charset "UTF-8"}]
     [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
-    [:title "LiškaSys"]
-    [:link {:rel "stylesheet" :href "assets/css/bootstrap.css"}]
+    [:title title]
+    [:link {:rel "stylesheet" :href "/assets/css/bootstrap.css"}]
     #_[:link {:rel "stylesheet" :href "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" :crossorigin "anonymous"}]
-    [:link {:rel "stylesheet" :href "assets/css/material-design-iconic-font.min.css"}]
-    [:link {:rel "stylesheet" :href "assets/css/re-com.css"}]
-    [:link {:rel "stylesheet" :href "css/site.css"}]
+    [:link {:rel "stylesheet" :href "/assets/css/material-design-iconic-font.min.css"}]
+    [:link {:rel "stylesheet" :href "/assets/css/re-com.css"}]
+    [:link {:rel "stylesheet" :href "/css/site.css"}]
     [:link {:href "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic"
             :rel "stylesheet" :type "text/css"}]
     [:link {:href "https://fonts.googleapis.com/css?family=Roboto+Condensed:400 ,300"
@@ -42,8 +42,7 @@
    (hiccup-response
     (hiccup-frame
      [:div.container.login
-      [:h3 "Vítejte v informačním systému LiškaSys"]
-      [:p "Pro přihlášení zadejte své přihlašovací údaje"]
+      [:h3 "Přihlašovací formulář"]
       (when msg
         [:div.alert.alert-danger msg])
       [:form.form-inline {:method "post"}
@@ -54,17 +53,16 @@
         [:label {:for "heslo"} "Heslo"]
         [:input#heslo.form-control {:name "pwd" :type "password"}]]
        (anti-forgery/anti-forgery-field)
-       #_[:input {:type "image" :src "img/login.svg"}]
        [:button.btn.btn-default {:type "submit"}
           [:span.glyphicon.glyphicon-log-in] " Přihlásit"]]]))))
 
 (defn cljs-landing-page
   ([]
-   (cljs-landing-page "Načítám aplikaci ..."))
+   (cljs-landing-page ))
   ([title]
    (hiccup-response
-    (hiccup-frame
+    (hiccup-frame title
      [:div
-      [:div#app title]
+      [:div#app "Načítám " title "..."]
       (anti-forgery/anti-forgery-field)
-      [:script {:src "js/main.js"}]]))))
+      [:script {:src "/js/main.js"}]]))))
