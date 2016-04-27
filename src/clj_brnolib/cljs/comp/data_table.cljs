@@ -193,6 +193,7 @@
                         (= js/Date (type value)) (time/to-format value time/ddMMyyyyHHmm)
                         (number? value) (util/money->text value)
                         (transit/bigdec? value) (util/money->text (util/parse-int (.-rep value)))
+                        (= js/Boolean (type value)) (util/boolean->text value)
                         :else (str value))]))])
                final-rows))]]
            (when (> (count rows) 5)
