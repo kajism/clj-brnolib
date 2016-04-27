@@ -107,8 +107,8 @@
                                      rows
                                      (filter
                                       (fn [row]
-                                        (> (.indexOf (str ((nth (get colls coll-idx) 1) row))
-                                                     (get (:search-colls @state) coll-idx))
+                                        (> (.indexOf (str/lower-case (str ((nth (get colls coll-idx) 1) row)))
+                                                     (str/lower-case (get (:search-colls @state) coll-idx)))
                                            -1))
                                       rows)))
                                  sorted-rows
