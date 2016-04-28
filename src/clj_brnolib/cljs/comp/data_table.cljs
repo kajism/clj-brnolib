@@ -51,7 +51,7 @@
                     :desc? (or desc? false)
                     :search-all ""
                     :search-colls {}
-                    :rows-per-page (or rows-per-page 100)
+                    :rows-per-page (or rows-per-page 50)
                     :page-no 0}
         state (if table-id
                 (re-frame/subscribe [:table-state table-id])
@@ -68,9 +68,9 @@
                                  (change-state-fn :order-by %)
                                  (change-state-fn :desc? false)))
                              (change-state-fn :page-no 0))
-        on-change-rows-per-page (fn [evt]
-                                  (change-state-fn :rows-per-page (util/parse-int (-> evt .-target .-value)))
-                                  (change-state-fn :page-no 0))
+        on-change-rows-per-page #(do
+                                   (change-state-fn :rows-per-page %)
+                                   (change-state-fn :page-no 0))
         on-change-search-all (fn [evt]
                                (change-state-fn :search-all (-> evt .-target .-value))
                                (change-state-fn :page-no 0))
@@ -197,14 +197,19 @@
                         :else (str value))]))])
                final-rows))]]
            (when (> (count rows) 5)
-             [:div
-              [:span (str "Zobrazuji " (inc row-from) " - " row-to " z " (count filtered-rows) " záznamů")
-               (if (< (count filtered-rows) (count rows)) (str " (vyfiltrováno z celkem " (count rows) " záznamů)"))]
-              [:span
-               ". Maximální počet řádků na stránce je "
-               [:select {:size 1 :value (str (:rows-per-page @state)) :on-change on-change-rows-per-page}
-                (for [x ["vše" 5 10 15 25 50 100]]
-                  ^{:key x} [:option {:value (if (string? x) "" x)} x])]]
+             [re-com/h-box :gap "5px" :align :center
+              :children
+              [[re-com/box :child (str "Zobrazuji " (inc row-from) " - " row-to " z " (count filtered-rows) " záznamů"
+                                       (if (< (count filtered-rows) (count rows)) (str " (vyfiltrováno z celkem " (count rows) " záznamů)")))]
+               [re-com/box :child ". Maximální počet řádků na stránce je "]
+               [re-com/single-dropdown
+                :model (:rows-per-page @state)
+                :on-change on-change-rows-per-page
+                :placeholder "vše"
+                :choices (into [{:id nil :label "vše"}]
+                               (map (fn [n] {:id n :label (str n)})
+                                    [5 10 15 25 50 100]))
+                :width "70px"]]
               ;;          [:div.dataTables_filter
               ;;           [:label "Search"
               ;;           [:input {:type "text" :value (:search-all @state) :on-change #(on-change-search-all %)}]]]
