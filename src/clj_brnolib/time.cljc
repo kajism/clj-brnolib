@@ -19,7 +19,7 @@
   (when date
     (time-coerce/from-date date)))
 
-(def dMyyyy (time-format/formatter "d.M.yyyy"))
+(def dMyyyy (time-format/formatter "d. M. yyyy"))
 (def ddMMyyyy (time-format/formatter "dd.MM.yyyy"))
 (def dMyyyyHmmss (time-format/formatter "d.M.yyyy H:mm:ss" #?(:clj (time/default-time-zone))))
 (def ddMMyyyyHHmmss (time-format/formatter "dd.MM.yyyy HH:mm:ss" #?(:clj (time/default-time-zone))))
@@ -55,3 +55,6 @@
 (defn hour->millis [hour]
   (when hour
     (* (hour->sec hour) 1000)))
+
+(def week-days (array-map 1 "pondělí" 2 "úterý" 3 "středa" 4  "čtvrtek" 5 "pátek"))
+
