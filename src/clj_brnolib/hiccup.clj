@@ -37,15 +37,15 @@
     [:script {:src "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"}]]))
 
 (defn login-page
-  ([] (login-page nil))
-  ([msg]
+  ([title] (login-page title nil))
+  ([title msg]
    (hiccup-response
-    (hiccup-frame
+    (hiccup-frame title
      [:div.container.login
       [:h3 "Přihlašovací formulář"]
       (when msg
         [:div.alert.alert-danger msg])
-      [:form.form-inline {:method "post"}
+      [:form {:method "post" :role "form"}
        [:div.form-group
         [:label {:for "user-name"} "Uživatelské jméno"]
         [:input#user-name.form-control {:name "user-name" :type "text"}]]
@@ -53,8 +53,7 @@
         [:label {:for "heslo"} "Heslo"]
         [:input#heslo.form-control {:name "pwd" :type "password"}]]
        (anti-forgery/anti-forgery-field)
-       [:button.btn.btn-default {:type "submit"}
-          [:span.glyphicon.glyphicon-log-in] " Přihlásit"]]]))))
+       [:button.btn.btn-default {:type "submit"} " Přihlásit se"]]]))))
 
 (defn cljs-landing-page
   ([]
