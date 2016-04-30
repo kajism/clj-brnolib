@@ -29,19 +29,19 @@
   ([prefix where-m]
    (let [prefix (if (str/blank? prefix) "" (str prefix "."))]
      (->> where-m
-          (map (fn [[k v]] (str "AND " prefix (esc k)
+          (map (fn [[k v]] (str prefix (esc k)
                                 (if (coll? v)
                                   (str " IN (" (str/join "," (take (count v) (repeat "?"))) ")")
                                   " = ?"))))
-          (into [" WHERE 1=1"])
-          (str/join " ")))))
+          (str/join " AND ")
+          not-empty))))
 
 (defmulti select (fn [db-spec table-kw where-m]
                    table-kw))
 
 (defn select-default [db-spec table-kw where-m]
   (timbre/debug "Selecting" table-kw "where" where-m)
-  (jdbc/query db-spec (into [(str "SELECT * FROM " (esc table-kw) (where where-m))]
+  (jdbc/query db-spec (into [(str "SELECT * FROM " (esc table-kw) (when-let [w (where where-m)] (str " WHERE " w)))]
                             (flatten (vals where-m)))))
 
 (defmethod select :default [db-spec table-kw where-m]
@@ -80,12 +80,13 @@
 (defmethod save! :default [db-spec table-kw row]
   (save!-default db-spec table-kw row))
 
-(defmulti delete! (fn [db-spec table-kw id]
+(defmulti delete! (fn [db-spec table-kw where-m]
                     table-kw))
 
-(defn delete!-default [db-spec table-kw id]
-  (timbre/debug "Deleting" table-kw "row" id)
-  (jdbc/delete! db-spec (esc table-kw) ["\"id\" = ?" id]))
+(defn delete!-default [db-spec table-kw where-m]
+  (timbre/debug "Deleting from" table-kw "where" where-m)
+  (jdbc/delete! db-spec (esc table-kw) (into [(where where-m)]
+                                             (flatten (vals where-m)))))
 
 (defmethod delete! :default [db-spec table-kw id]
   (delete!-default db-spec table-kw id))
