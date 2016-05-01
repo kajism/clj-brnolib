@@ -21,7 +21,7 @@
      :default
      (esc to-esc "")))
   ([s & ss]
-   (str/replace (str s (apply str ss)) #":([a-z0-9\-]+)" "\"$1\"")))
+   (str/replace (str s (apply str ss)) #":([a-z0-9\-?]+)" "\"$1\"")))
 
 (defn where
   ([where-m]
