@@ -56,5 +56,5 @@
   (when hour
     (* (hour->sec hour) 1000)))
 
-(def week-days (array-map 1 "pondělí" 2 "úterý" 3 "středa" 4  "čtvrtek" 5 "pátek"))
+(def week-days (array-map 1 "pondělí" 2 "úterý" 3 "středa" 4  "čtvrtek" 5 "pátek" 6 "sobota" 7 "neděle"))
 
