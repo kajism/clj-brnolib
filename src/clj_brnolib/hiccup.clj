@@ -53,7 +53,29 @@
         [:label {:for "heslo"} "Heslo"]
         [:input#heslo.form-control {:name "pwd" :type "password"}]]
        (anti-forgery/anti-forgery-field)
-       [:button.btn.btn-default {:type "submit"} " Přihlásit se"]]]))))
+       [:button.btn.btn-default {:type "submit"} "Přihlásit se"]]]))))
+
+(defn passwd-page
+  ([title] (passwd-page title nil))
+  ([title msg]
+   (hiccup-response
+    (hiccup-frame title
+                  [:div.container.login
+                   [:h3 "Změna hesla"]
+                   (when msg
+                     [:div.alert.alert-danger msg])
+                   [:form {:method "post" :role "form"}
+                    [:div.form-group
+                     [:label {:for "old-pwd"} "Staré heslo"]
+                     [:input#user-name.form-control {:name "old-pwd" :type "password"}]]
+                    [:div.form-group
+                     [:label {:for "new-pwd"} "Nové heslo"]
+                     [:input#heslo.form-control {:name "new-pwd" :type "password"}]]
+                    [:div.form-group
+                     [:label {:for "new-pwd2"} "Nové heslo znovu"]
+                     [:input#heslo.form-control {:name "new-pwd2" :type "password"}]]
+                    (anti-forgery/anti-forgery-field)
+                    [:button.btn.btn-danger {:type "submit"} "Změnit heslo"]]]))))
 
 (defn cljs-landing-page
   ([]
