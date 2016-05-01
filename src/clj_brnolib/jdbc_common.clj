@@ -71,7 +71,7 @@
                   table-kw))
 
 (defn save!-default [db-spec table-kw row]
-  (timbre/debug "Saving" table-kw "row" row)
+  (timbre/info "Saving" table-kw "row" row)
   (let [id (if (:id row)
              (update! db-spec table-kw row)
              (insert! db-spec table-kw row))]
@@ -84,7 +84,7 @@
                     table-kw))
 
 (defn delete!-default [db-spec table-kw where-m]
-  (timbre/debug "Deleting from" table-kw "where" where-m)
+  (timbre/info "Deleting from" table-kw "where" where-m)
   (jdbc/delete! db-spec (esc table-kw) (into [(where where-m)]
                                              (flatten (vals where-m)))))
 
