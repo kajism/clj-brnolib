@@ -47,8 +47,8 @@
         [:div.alert.alert-danger msg])
       [:form {:method "post" :role "form"}
        [:div.form-group
-        [:label {:for "user-name"} "Uživatelské jméno"]
-        [:input#user-name.form-control {:name "user-name" :type "text"}]]
+        [:label {:for "username"} "Uživatelské jméno"]
+        [:input#user-name.form-control {:name "username" :type "text"}]]
        [:div.form-group
         [:label {:for "heslo"} "Heslo"]
         [:input#heslo.form-control {:name "pwd" :type "password"}]]
