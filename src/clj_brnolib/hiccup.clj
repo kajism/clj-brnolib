@@ -40,8 +40,9 @@
   ([title] (login-page title nil))
   ([title msg]
    (hiccup-response
-    (hiccup-frame title
-     [:div.container.login
+    (hiccup-frame
+     title
+     [:div.container
       [:h3 "Přihlašovací formulář"]
       (when msg
         [:div.alert.alert-danger msg])
@@ -53,13 +54,13 @@
         [:label {:for "heslo"} "Heslo"]
         [:input#heslo.form-control {:name "pwd" :type "password"}]]
        (anti-forgery/anti-forgery-field)
-       [:button.btn.btn-default {:type "submit"} "Přihlásit se"]]]))))
+       [:button.btn.btn-success {:type "submit"} "Přihlásit se"]]]))))
 
-(defn passwd-form [msg]
-  [:div.container.login
+(defn passwd-form [{:keys [type msg] :as alert}]
+  [:div.container
    [:h3 "Změna hesla"]
-   (when msg
-     [:div.alert.alert-danger msg])
+   (when alert
+     [:div {:class (str "alert alert-" (name type))} msg])
    [:form {:method "post" :role "form"}
     [:div.form-group
      [:label {:for "old-pwd"} "Staré heslo"]
@@ -83,3 +84,24 @@
       [:div#app "Načítám " title "..."]
       (anti-forgery/anti-forgery-field)
       [:script {:src "/js/main.js"}]]))))
+
+(defn user-profile-form [params {:keys [type msg] :as alert}]
+  [:div.container
+   [:h3 "Udaje o uživateli"]
+   (when alert
+     [:div.alert {:class (str "alert-" (name type))} msg])
+   [:form {:method "post" :role "form"}
+    [:div.form-group
+     [:label {:for "firstname"} "Jméno"]
+     [:input#user-name.form-control {:name "firstname" :type "text" :value (:firstname params)}]]
+    [:div.form-group
+     [:label {:for "lastname"} "Příjmení"]
+     [:input#heslo.form-control {:name "lastname" :type "text" :value (:lastname params)}]]
+    [:div.form-group
+     [:label {:for "email"} "Email"]
+     [:input#heslo.form-control {:name "email" :type "text" :value (:email params)}]]
+    [:div.form-group
+     [:label {:for "phone"} "Telefon"]
+     [:input#heslo.form-control {:name "phone" :type "text" :value (:phone params)}]]
+    (anti-forgery/anti-forgery-field)
+    [:button.btn.btn-success {:type "submit"} "Uložit"]]])
