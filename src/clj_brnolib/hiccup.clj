@@ -56,6 +56,17 @@
        (anti-forgery/anti-forgery-field)
        [:button.btn.btn-success {:type "submit"} "Přihlásit se"]]]))))
 
+(defn cljs-landing-page
+  ([]
+   (cljs-landing-page ))
+  ([title]
+   (hiccup-response
+    (hiccup-frame title
+                  [:div
+                   [:div#app "Načítám " title "..."]
+                   (anti-forgery/anti-forgery-field)
+                   [:script {:src "/js/main.js"}]]))))
+
 (defn passwd-form [{:keys [type msg] :as alert}]
   [:div.container
    [:h3 "Změna hesla"]
@@ -74,20 +85,9 @@
     (anti-forgery/anti-forgery-field)
     [:button.btn.btn-danger {:type "submit"} "Změnit heslo"]]])
 
-(defn cljs-landing-page
-  ([]
-   (cljs-landing-page ))
-  ([title]
-   (hiccup-response
-    (hiccup-frame title
-     [:div
-      [:div#app "Načítám " title "..."]
-      (anti-forgery/anti-forgery-field)
-      [:script {:src "/js/main.js"}]]))))
-
 (defn user-profile-form [params {:keys [type msg] :as alert}]
   [:div.container
-   [:h3 "Udaje o uživateli"]
+   [:h3 "Údaje o uživateli"]
    (when alert
      [:div.alert {:class (str "alert-" (name type))} msg])
    [:form {:method "post" :role "form"}
