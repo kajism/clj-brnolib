@@ -12,4 +12,4 @@
 
 (defn valid-phone? [phone]
   (and (not (str/blank? phone))
-       (re-matches #"^\+?\d{9,14}$" phone)))
+       (re-matches #"^\+?\d{9,14}$" (str/replace phone #"\s" ""))))
