@@ -10,17 +10,23 @@
    (GET  "/chsk" req (ring-ajax-get-or-ws-handshake req))
    (POST "/chsk" req (ring-ajax-post                req))))
 
+(defmulti event-msg-handler (fn [db-spec {id :id}] id))
+
+(defmethod event-msg-handler :default
+  [db-spec {:keys [event id ?data ring-req ?reply-fn send-fn] :as ev-msg}]
+  (timbre/debugf "Unhandled event: %s" event)
+  {:umatched-event-as-echoed-from-from-server event})
+
+(defmethod event-msg-handler :user/auth
+  [db-spec {:keys [event id ?data ring-req ?reply-fn send-fn] :as ev-msg}]
+  (get-in ring-req [:session :user]))
+
 (defn make-event-msg-handler [db-spec]
-  (fn [{:as ev-msg :keys [event id ?data ring-req ?reply-fn send-fn]}]
-    (when ?reply-fn
-      (?reply-fn
-       (case id
-         :test/init {:test/init "Response"}
-         :user/auth (get-in ring-req [:session :user])
-         :plc-sim/alarm  {:test/init "Response 2"}
-         (do
-           (timbre/debugf "Unhandled event: %s" event)
-           {:umatched-event-as-echoed-from-from-server event}))))))
+  (fn [{:keys [event id ?data ring-req ?reply-fn send-fn] :as ev-msg}]
+    (timbre/debugf "Handling event: %s" event)
+    (let [result (event-msg-handler db-spec ev-msg)]
+      (when ?reply-fn
+        (?reply-fn result)))))
 
 (defrecord ChannelSocketServer
            [db ring-ajax-post ring-ajax-get-or-ws-handshake ch-chsk chsk-send! connected-uids router web-server-adapter handler options]

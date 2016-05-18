@@ -7,9 +7,9 @@
   (start [component]
     (let [db (d/create-database uri)
           conn (d/connect uri)]
-      (assoc component :conn conn)))
+      (assoc component :spec conn)))
   (stop [component]
-    (assoc component :conn nil)))
+    (assoc component :spec nil)))
 
 (defn datomic [uri]
   (map->Datomic {:uri uri}))

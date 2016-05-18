@@ -2,6 +2,12 @@
   (:require [ring.util.response :as response]
             [taoensso.timbre :as timbre]))
 
+(defn wrap-logging [handler]
+  (fn [request]
+    (timbre/debug (:request-method request) (:uri request))
+    #_(timbre/debug request)
+    (handler request)))
+
 (defn wrap-exceptions [handler api-pattern]
   (fn [request]
     (if-not (re-find api-pattern (:uri request))
