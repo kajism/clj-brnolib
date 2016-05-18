@@ -10,6 +10,7 @@
                  [com.andrewmcveigh/cljs-time "0.4.0"]
                  [com.cognitect/transit-clj "0.8.285"]
                  [com.cognitect/transit-cljs "0.8.237"]
+                 [com.stuartsierra/component "0.3.1"]
                  [hiccup "1.0.5"]
                  [ring "1.4.0"]
                  [ring/ring-defaults "0.2.0"]
@@ -21,5 +22,7 @@
                  [org.clojure/tools.namespace "0.3.0-alpha3"]]
   :profiles {:dev {:dependencies [[com.cemerick/piggieback "0.2.1"]
                                   [com.datomic/datomic-free "0.9.5350"]
+                                  [com.taoensso/sente "1.8.1"]
+                                  [http-kit "2.1.19"]
                                   [org.clojure/java.jdbc "0.5.8"]                                  ]
                    :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}}})
