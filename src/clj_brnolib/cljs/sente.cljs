@@ -1,4 +1,4 @@
-(ns clj-brnolib.cljs.sente
+(ns ^:figwheel-always clj-brnolib.cljs.sente
   (:require [re-frame.core :as re-frame]
             [taoensso.sente :as sente]
             [taoensso.timbre :as timbre]))
