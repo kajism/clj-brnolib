@@ -25,9 +25,9 @@
      [:meta {:charset "UTF-8"}]
      [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
      [:title title]
-     [:link {:rel "stylesheet" :href "/css/site.css"}]
      [:link {:rel "stylesheet" :href "/assets/css/bootstrap.css"}]
      #_[:link {:rel "stylesheet" :href "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" :crossorigin "anonymous"}]
+     [:link {:rel "stylesheet" :href "/css/site.css"}]
      (when re-com-styles?
        [:link {:rel "stylesheet" :href "/assets/css/material-design-iconic-font.min.css"}]
        [:link {:rel "stylesheet" :href "/assets/css/re-com.css"}]
