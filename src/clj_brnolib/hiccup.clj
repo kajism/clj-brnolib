@@ -29,12 +29,13 @@
      #_[:link {:rel "stylesheet" :href "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" :crossorigin "anonymous"}]
      [:link {:rel "stylesheet" :href "/css/site.css"}]
      (when re-com-styles?
-       [:link {:rel "stylesheet" :href "/assets/css/material-design-iconic-font.min.css"}]
-       [:link {:rel "stylesheet" :href "/assets/css/re-com.css"}]
-       [:link {:href "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic"
-               :rel "stylesheet" :type "text/css"}]
-       [:link {:href "https://fonts.googleapis.com/css?family=Roboto+Condensed:400 ,300"
-               :rel "stylesheet" :type "text/css"}])]
+       (list
+        [:link {:rel "stylesheet" :href "/assets/css/material-design-iconic-font.min.css"}]
+        [:link {:rel "stylesheet" :href "/assets/css/re-com.css"}]
+        [:link {:href "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic"
+                :rel "stylesheet" :type "text/css"}]
+        [:link {:href "https://fonts.googleapis.com/css?family=Roboto+Condensed:400 ,300"
+                :rel "stylesheet" :type "text/css"}]))]
     [:body
      body
      [:script {:src "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"}]
@@ -61,8 +62,6 @@
        [:button.btn.btn-success {:type "submit"} "Přihlásit se"]]]))))
 
 (defn cljs-landing-page
-  ([]
-   (cljs-landing-page ))
   ([title]
    (hiccup-response
     (hiccup-frame title
