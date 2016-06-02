@@ -24,6 +24,7 @@
 (def dMyyyyHmmss (time-format/formatter "d.M.yyyy H:mm:ss" #?(:clj (time/default-time-zone))))
 (def ddMMyyyyHHmmss (time-format/formatter "dd.MM.yyyy HH:mm:ss" #?(:clj (time/default-time-zone))))
 (def ddMMyyyyHHmm (time-format/formatter "dd.MM.yyyy HH:mm" #?(:clj (time/default-time-zone))))
+(def yyyyMMdd-HHmm (time-format/formatter "yyyyMMdd-HHmm" #?(:clj (time/default-time-zone))))
 (def HHmm (time-format/formatter "HH:mm" #?(:clj (time/default-time-zone))))
 
 (defn to-format [date formatter]
