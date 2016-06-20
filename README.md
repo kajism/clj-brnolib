@@ -1,4 +1,5 @@
 # clj-brnolib
+# DEPRECATED (due to the abstraction cost)
 
 A Clojure library designed to ... well, that part is up to you.
 
