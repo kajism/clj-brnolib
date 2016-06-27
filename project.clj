@@ -6,7 +6,7 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.8.40"]
                  [org.clojure/tools.nrepl "0.2.12"]
-                 [clj-time "0.11.0"]
+                 [clj-time "0.12.0"]
                  [com.andrewmcveigh/cljs-time "0.4.0"]
                  [com.cognitect/transit-clj "0.8.285"]
                  [com.cognitect/transit-cljs "0.8.237"]
